@@ -14,17 +14,12 @@ function lock(value: boolean) {
   if (!import.meta.client || value === locked) return
   locked = value
   openSheets += value ? 1 : -1
-  // C'est .app-scroller qui défile, pas le document (voir main.css)
-  document.querySelectorAll<HTMLElement>('.app-scroller').forEach((el) => {
-    el.style.overflow = openSheets > 0 ? 'hidden' : ''
-  })
+  document.documentElement.style.overflow = openSheets > 0 ? 'hidden' : ''
   if (value) addEventListener('keydown', onKey)
   else removeEventListener('keydown', onKey)
 }
 
 watch(open, lock)
-const mounted = ref(false)
-onMounted(() => (mounted.value = true))
 onBeforeUnmount(() => lock(false))
 
 const z = computed(() => (props.stacked ? 'z-[45]' : 'z-40'))
@@ -35,8 +30,7 @@ let openSheets = 0
 </script>
 
 <template>
-  <!-- Créé après le chargement : un Teleport vers autre chose que body ne se réhydrate pas -->
-  <Teleport v-if="mounted" to="#app-overlays" defer>
+  <Teleport to="body">
     <Transition enter-from-class="opacity-0" leave-to-class="opacity-0" enter-active-class="transition-opacity duration-200" leave-active-class="transition-opacity duration-200">
       <div v-if="open" class="fixed inset-0 bg-black/40" :class="z" @click="open = false" />
     </Transition>

@@ -14,15 +14,11 @@ useHead({
 </script>
 
 <template>
-  <div id="app-root" class="app-root">
-    <NuxtPwaManifest />
-    <NuxtLoadingIndicator color="var(--c-accent)" :height="3" />
-    <NuxtLayout>
-      <NuxtPage />
-    </NuxtLayout>
-    <AppToast />
-    <ConfirmSheet />
-    <!-- Les feuilles (BottomSheet) sont téléportées ici : elles partagent le cadre de l'app -->
-    <div id="app-overlays" />
-  </div>
+  <NuxtPwaManifest />
+  <NuxtLoadingIndicator color="var(--c-accent)" :height="3" />
+  <NuxtLayout>
+    <NuxtPage />
+  </NuxtLayout>
+  <AppToast />
+  <ConfirmSheet />
 </template>

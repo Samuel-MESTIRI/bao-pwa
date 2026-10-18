@@ -1,6 +1,6 @@
 <!-- Sans barre d'onglets : connexion, formulaires, mode cuisine, fiche recette -->
 <template>
-  <div class="app-scroller">
+  <div class="min-h-dvh">
     <slot />
   </div>
 </template>
