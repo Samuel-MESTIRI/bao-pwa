@@ -1,0 +1,39 @@
+{
+  "name": "bao-pwa",
+  "private": true,
+  "type": "module",
+  "version": "1.0.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "nuxt dev",
+    "build": "nuxt build",
+    "preview": "node .output/server/index.mjs",
+    "postinstall": "nuxt prepare",
+    "typecheck": "nuxt typecheck",
+    "db:generate": "drizzle-kit generate",
+    "icons": "node scripts/generate-icons.mjs"
+  },
+  "dependencies": {
+    "@fontsource/poppins": "^5.3.0",
+    "drizzle-orm": "^0.45.4",
+    "nuxt": "^4.6.2",
+    "nuxt-auth-utils": "^0.5.32",
+    "pg": "^8.23.1",
+    "sharp": "^0.35.5",
+    "vue": "^3.5.44",
+    "vue-router": "^5.4.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@electric-sql/pglite": "^0.5.10",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/pg": "^8.23.1",
+    "@vite-pwa/nuxt": "^1.1.1",
+    "drizzle-kit": "^0.31.11",
+    "tailwindcss": "^4.3.3",
+    "typescript": "~5.9.3",
+    "vue-tsc": "^3.3.13"
+  }
+}

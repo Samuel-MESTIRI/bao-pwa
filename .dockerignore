@@ -1,0 +1,11 @@
+node_modules
+.nuxt
+.output
+.data
+.git
+.claude
+.env
+.env.*
+!.env.example
+*.log
+assets-src

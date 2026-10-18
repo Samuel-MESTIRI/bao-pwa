@@ -1,0 +1,176 @@
+@import "tailwindcss";
+
+/*
+ * Design system BAO, repris de l'app d'origine (constants/theme.ts) :
+ * vert de marque, accent terracotta, neutres chauds (crème / bruns).
+ * Les couleurs sont des variables CSS : elles changent avec le thème,
+ * Tailwind ne fait que les exposer (bg-surface, text-primary…).
+ */
+
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
+@theme {
+  --font-sans: "Poppins", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --color-primary: var(--c-primary);
+  --color-primary-dark: var(--c-primary-dark);
+  --color-primary-light: var(--c-primary-light);
+  --color-primary-soft: var(--c-primary-soft);
+  --color-on-primary: var(--c-on-primary);
+  --color-accent: var(--c-accent);
+  --color-accent-strong: var(--c-accent-strong);
+  --color-accent-surface: var(--c-accent-surface);
+  --color-on-accent: var(--c-on-accent);
+  --color-bg: var(--c-bg);
+  --color-surface: var(--c-surface);
+  --color-surface-alt: var(--c-surface-alt);
+  --color-surface-muted: var(--c-surface-muted);
+  --color-ink: var(--c-text);
+  --color-ink-2: var(--c-text-secondary);
+  --color-muted: var(--c-text-muted);
+  --color-line: var(--c-border);
+  --color-line-strong: var(--c-border-strong);
+  --color-danger: var(--c-danger);
+  --color-danger-solid: var(--c-danger-solid);
+  --color-danger-surface: var(--c-danger-surface);
+  --color-placeholder: var(--c-image-placeholder);
+  --color-scrim: var(--c-scrim);
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 20px;
+
+  --shadow-card: 0 1px 2px rgb(42 38 34 / 0.06), 0 1px 1px rgb(42 38 34 / 0.03);
+  --shadow-float: 0 4px 16px rgb(42 38 34 / 0.14);
+}
+
+/* ---- Thème clair (défaut) ---- */
+:root {
+  color-scheme: light;
+  --c-primary: #294936;
+  --c-primary-dark: #1B3123;
+  --c-primary-light: #5B8266;
+  --c-primary-soft: #5B826636;
+  --c-on-primary: #FFFFFF;
+  --c-accent: #C2603C;
+  --c-accent-strong: #8F4023;
+  --c-accent-surface: #F8E7DE;
+  --c-on-accent: #FFFFFF;
+  --c-bg: #FBF7F0;
+  --c-surface: #FFFFFF;
+  --c-surface-alt: #F3EDE3;
+  --c-surface-muted: #EAE2D6;
+  --c-text: #2A2622;
+  --c-text-secondary: #6B6055;
+  --c-text-muted: #8A7E72;
+  --c-border: #E6DDD0;
+  --c-border-strong: #D6C9B8;
+  --c-danger: #CC0000;
+  --c-danger-solid: #CC0000;
+  --c-danger-surface: #FFE5E5;
+  --c-image-placeholder: #EAE2D6;
+  --c-scrim: rgb(26 22 18 / 0.72);
+}
+
+/* ---- Thème sombre : choisi explicitement, ou « Système » quand l'appareil est en sombre ---- */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --c-primary: #7BA98A;
+  --c-primary-dark: #5B8266;
+  --c-primary-light: #7BA98A;
+  --c-primary-soft: #7BA98A2E;
+  --c-on-primary: #0F1D16;
+  --c-accent: #E08A62;
+  --c-accent-strong: #C2603C;
+  --c-accent-surface: #3A2119;
+  --c-on-accent: #2A2622;
+  --c-bg: #16130F;
+  --c-surface: #201C17;
+  --c-surface-alt: #2A251E;
+  --c-surface-muted: #342E26;
+  --c-text: #F0EAE0;
+  --c-text-secondary: #B5AA9C;
+  --c-text-muted: #978C80;
+  --c-border: #3E362C;
+  --c-border-strong: #4E453A;
+  --c-danger: #F87171;
+  --c-danger-solid: #C62828;
+  --c-danger-surface: #3A1E1E;
+  --c-image-placeholder: #2A251E;
+  --c-scrim: rgb(0 0 0 / 0.75);
+}
+
+@layer base {
+  html {
+    background: var(--c-bg);
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-bg text-ink font-sans antialiased;
+    /* En cuisine on lit de loin : corps de texte un cran au-dessus du standard */
+    font-size: 17px;
+    line-height: 1.5;
+    overscroll-behavior-y: none;
+  }
+
+  /* iOS zoome sur un champ dont la police fait moins de 16 px */
+  input, select, textarea, button {
+    font: inherit;
+    color: inherit;
+  }
+
+  button, [role="button"] {
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--c-primary-light);
+    outline-offset: 2px;
+  }
+}
+
+@layer components {
+  /* Marges des zones sûres (encoche, Dynamic Island, barre d'accueil) */
+  .safe-top { padding-top: max(env(safe-area-inset-top), 12px); }
+  .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+  .safe-x {
+    padding-left: max(env(safe-area-inset-left), 16px);
+    padding-right: max(env(safe-area-inset-right), 16px);
+  }
+
+  .card {
+    @apply bg-surface rounded-md border border-line shadow-(--shadow-card);
+  }
+
+  .field {
+    @apply w-full min-h-13 rounded-md bg-surface-alt border border-transparent px-4 py-3 text-[17px] text-ink placeholder:text-muted outline-none transition-colors;
+  }
+  .field:focus {
+    @apply border-primary-light bg-surface;
+  }
+
+  .label {
+    @apply block mb-2 text-[15px] font-bold text-ink;
+  }
+
+  .overline {
+    @apply text-[13px] font-bold uppercase tracking-[0.08em] text-muted;
+  }
+
+  .no-scrollbar { scrollbar-width: none; }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Transitions de page discrètes */
+.page-enter-active, .page-leave-active { transition: opacity 0.15s ease; }
+.page-enter-from, .page-leave-to { opacity: 0; }
