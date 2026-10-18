@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { NuxtLink } from '#components'
+
 withDefaults(defineProps<{
   variant?: 'primary' | 'accent' | 'secondary' | 'ghost' | 'danger'
   type?: 'button' | 'submit'
@@ -11,7 +13,7 @@ withDefaults(defineProps<{
 
 <template>
   <component
-    :is="to ? resolveComponent('NuxtLink') : 'button'"
+    :is="to ? NuxtLink : 'button'"
     :to="to"
     :type="to ? undefined : type"
     :disabled="disabled || loading"

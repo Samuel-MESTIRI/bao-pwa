@@ -47,7 +47,8 @@ export default defineNuxtConfig({
       htmlAttrs: { lang: 'fr' },
       title: 'BAO',
       meta: [
-        { name: 'viewport', content: 'width=device-width, initial-scale=1, viewport-fit=cover' },
+        // Pas de zoom : app utilisée comme une app native (le texte est déjà grand, A−/A+ en mode cuisine)
+        { name: 'viewport', content: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover' },
         { name: 'description', content: 'Ton carnet de recettes et ta liste de courses.' },
         { name: 'theme-color', content: THEME_COLOR_LIGHT, media: '(prefers-color-scheme: light)' },
         { name: 'theme-color', content: THEME_COLOR_DARK, media: '(prefers-color-scheme: dark)' },
