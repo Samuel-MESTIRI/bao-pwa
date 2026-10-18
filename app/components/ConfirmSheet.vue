@@ -7,7 +7,7 @@ const open = computed({
 </script>
 
 <template>
-  <BottomSheet v-model="open" :title="state?.title">
+  <BottomSheet v-model="open" :title="state?.title" stacked>
     <p v-if="state?.message" class="mb-6 text-ink-2">
       {{ state.message }}
     </p>

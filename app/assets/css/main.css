@@ -101,6 +101,16 @@
 }
 
 @layer base {
+  /*
+   * La page elle-même ne défile pas : c'est `.app-scroller` (dans les layouts)
+   * qui défile. Sur iOS en mode écran d'accueil, le défilement du document
+   * décale les éléments fixés en bas (barre d'onglets relevée au lancement).
+   */
+  html, body, #__nuxt {
+    height: 100%;
+    overflow: hidden;
+  }
+
   html {
     background: var(--c-bg);
     -webkit-text-size-adjust: 100%;
@@ -136,6 +146,14 @@
 }
 
 @layer components {
+  /* Conteneur de défilement de l'app (voir html/body plus haut) */
+  .app-scroller {
+    height: 100%;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+
   /* Marges des zones sûres (encoche, Dynamic Island, barre d'accueil) */
   .safe-top { padding-top: max(env(safe-area-inset-top), 12px); }
   .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
