@@ -146,6 +146,23 @@
 }
 
 @layer components {
+  /*
+   * Cadre de l'app, à la hauteur réelle de l'écran (--app-height, posée par
+   * plugins/app-height.client.ts sur iPhone en mode écran d'accueil).
+   * Le `transform` en fait le repère des éléments `position: fixed` qu'il
+   * contient : barre d'onglets, feuilles, boutons du bas s'y ancrent au lieu
+   * de la zone d'affichage faussée par iOS.
+   */
+  .app-root {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--app-height, 100%);
+    overflow: hidden;
+    transform: translateZ(0);
+  }
+
   /* Conteneur de défilement de l'app (voir html/body plus haut) */
   .app-scroller {
     height: 100%;

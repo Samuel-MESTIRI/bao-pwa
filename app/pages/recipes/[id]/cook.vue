@@ -66,7 +66,7 @@ onBeforeUnmount(() => removeEventListener('keydown', onKey))
 </script>
 
 <template>
-  <div v-if="recipe" class="safe-x flex h-dvh flex-col bg-bg" @touchstart.passive="onTouchStart" @touchend.passive="onTouchEnd">
+  <div v-if="recipe" class="safe-x flex h-full flex-col bg-bg" @touchstart.passive="onTouchStart" @touchend.passive="onTouchEnd">
     <!-- En-tête -->
     <header class="safe-top flex items-center gap-2">
       <IconButton icon="close" label="Quitter le mode cuisine" variant="soft" @click="finish" />
