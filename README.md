@@ -35,7 +35,7 @@ Compte de test utilisé en local (base PGlite locale uniquement) : `demo@bao.tes
 
 ### Icônes et écrans de démarrage
 
-Générés à partir de `assets-src/` (logo BAO et panda de l'app d'origine) : `npm run icons`. Le résultat est versionné dans `public/`.
+Générés à partir de `assets-src/icon.png` (logo « BAO » avec le fruit dans le O) : `npm run icons`. Le logo seul est extrait en masque (`public/logo-mask.png`) et coloré selon le thème. Le résultat est versionné dans `public/`.
 
 ## Déploiement (Coolify)
 

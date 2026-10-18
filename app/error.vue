@@ -8,7 +8,7 @@ useHead({ title: notFound.value ? 'Introuvable · BAO' : 'Oups · BAO' })
 
 <template>
   <div class="safe-top safe-x mx-auto flex min-h-dvh max-w-md flex-col items-center justify-center text-center">
-    <img src="/logo-light.webp" alt="" width="120" height="120" class="mb-6 size-28 object-contain opacity-80">
+    <BrandLogo :width="140" class="mb-8 text-primary" />
     <h1 class="mb-2 text-2xl font-bold">
       {{ notFound ? 'Page introuvable' : 'Oups, quelque chose a raté' }}
     </h1>

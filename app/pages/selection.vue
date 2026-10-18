@@ -93,7 +93,7 @@ async function generate() {
       </ul>
       <div class="h-20" />
 
-      <div class="fixed inset-x-0 z-20 px-4" style="bottom: calc(4.75rem + env(safe-area-inset-bottom))">
+      <div class="fixed inset-x-0 z-20 px-4" style="bottom: calc(5.5rem + env(safe-area-inset-bottom))">
         <div class="mx-auto max-w-2xl">
           <AppButton variant="accent" icon="list" class="shadow-(--shadow-float)" :loading="generating" @click="generate">
             Créer ma liste de courses
