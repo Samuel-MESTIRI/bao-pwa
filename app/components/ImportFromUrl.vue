@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import type { RecipeFormValue } from './RecipeForm.vue'
 
+// Feuille d'import : on colle le lien d'une recette, la fiche est lue par le
+// serveur puis renvoyée à la page pour pré-remplir le formulaire.
+const open = defineModel<boolean>({ default: false })
 const props = defineProps<{ initialUrl?: string }>()
 const emit = defineEmits<{ imported: [recipe: RecipeFormValue & { source: string }] }>()
 
@@ -8,7 +11,7 @@ const toast = useToast()
 const url = ref(props.initialUrl ?? '')
 const loading = ref(false)
 const error = ref('')
-const done = ref<string | null>(null) // site d'où vient la dernière recette importée
+const input = ref<HTMLInputElement>()
 
 // Connu seulement dans le navigateur : calculé après le chargement pour un rendu serveur identique
 const canPaste = ref(false)
@@ -27,6 +30,7 @@ async function paste() {
   }
   catch {
     // Accès au presse-papiers refusé : l'utilisateur peut coller à la main
+    input.value?.focus()
   }
 }
 
@@ -37,8 +41,9 @@ async function run() {
   loading.value = true
   try {
     const recipe = await $fetch('/api/import/url', { method: 'POST', body: { url: value } })
-    done.value = new URL(recipe.source).hostname.replace(/^www\./, '')
     emit('imported', recipe as RecipeFormValue & { source: string })
+    open.value = false
+    url.value = ''
     toast.show('Recette importée : vérifie puis enregistre')
   }
   catch (e) {
@@ -49,31 +54,32 @@ async function run() {
   }
 }
 
+watch(open, (value) => {
+  if (!value) error.value = ''
+})
+
 onMounted(() => {
   canPaste.value = !!navigator.clipboard?.readText
-  if (props.initialUrl) run()
+  if (props.initialUrl) {
+    open.value = true
+    run()
+  }
 })
 </script>
 
 <template>
-  <section class="mb-7 rounded-lg bg-primary-soft p-4">
-    <div class="mb-3 flex items-center gap-2 font-bold text-primary">
-      <AppIcon name="search" :size="22" />
-      Importer depuis un site
-    </div>
-    <p v-if="done" class="mb-3 text-[15px] text-ink-2">
-      Importée depuis <strong class="text-ink">{{ done }}</strong>. Vérifie la fiche ci-dessous, puis enregistre.
-    </p>
-    <p v-else class="mb-3 text-[15px] text-ink-2">
-      Colle le lien d'une recette (Marmiton, Journal des Femmes, 750g…) : la fiche se remplit toute seule.
+  <BottomSheet v-model="open" title="Importer une recette">
+    <p class="mb-4 text-ink-2">
+      Colle le lien d'une recette (Marmiton, Journal des Femmes, 750g…) : la fiche se remplit toute seule, tu n'as plus qu'à vérifier.
     </p>
 
-    <form class="flex gap-2" @submit.prevent="run">
+    <form class="space-y-3" @submit.prevent="run">
       <label class="sr-only" for="import-url">Lien de la recette</label>
       <input
         id="import-url"
+        ref="input"
         v-model="url"
-        class="field min-w-0 bg-surface! rounded-full!"
+        class="field"
         type="url"
         inputmode="url"
         placeholder="https://www.marmiton.org/…"
@@ -81,31 +87,17 @@ onMounted(() => {
         autocapitalize="none"
         enterkeyhint="go"
       >
-      <button
-        v-if="canPaste && !url"
-        type="button"
-        class="min-h-13 shrink-0 rounded-full bg-surface px-4 font-bold text-primary transition active:scale-95"
-        @click="paste"
-      >
-        Coller
-      </button>
-      <button
-        v-else
-        type="submit"
-        class="flex size-13 shrink-0 items-center justify-center rounded-full bg-primary text-on-primary transition active:scale-90 disabled:opacity-50"
-        :disabled="!url.trim() || loading"
-        aria-label="Importer la recette"
-      >
-        <span v-if="loading" class="size-5 animate-spin rounded-full border-2 border-current border-t-transparent" />
-        <AppIcon v-else name="check" :size="24" />
-      </button>
-    </form>
 
-    <p v-if="loading" class="mt-3 text-[15px] text-ink-2">
-      Lecture de la recette…
-    </p>
-    <p v-if="error" class="mt-3 rounded-md bg-danger-surface px-4 py-3 text-[15px] font-medium text-danger" role="alert">
-      {{ error }}
-    </p>
-  </section>
+      <p v-if="error" class="rounded-md bg-danger-surface px-4 py-3 text-[15px] font-medium text-danger" role="alert">
+        {{ error }}
+      </p>
+
+      <AppButton v-if="canPaste && !url.trim()" icon="list" variant="secondary" :loading="loading" @click="paste">
+        Coller le lien
+      </AppButton>
+      <AppButton v-else type="submit" icon="download" :loading="loading" :disabled="!url.trim()">
+        {{ loading ? 'Lecture de la recette…' : 'Importer' }}
+      </AppButton>
+    </form>
+  </BottomSheet>
 </template>
