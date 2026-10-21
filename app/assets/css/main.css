@@ -159,7 +159,7 @@
     @apply block mb-2 text-[15px] font-bold text-ink;
   }
 
-  .overline {
+  .section-label {
     @apply text-[13px] font-bold uppercase tracking-[0.08em] text-muted;
   }
 

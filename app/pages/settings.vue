@@ -13,6 +13,9 @@ revalidate(refresh)
 
 const THEME_LABELS: Record<ThemeMode, string> = { system: 'Système', light: 'Clair', dark: 'Sombre' }
 
+const ICON_LABELS = new Map<string, string>(CATEGORY_ICON_GROUPS.flatMap(g => g.icons.map(i => [i.id, i.label] as const)))
+const iconLabel = (id: string) => ICON_LABELS.get(id) ?? ''
+
 const editing = ref<{ id: number | null, name: string, icon: CategoryIcon } | null>(null)
 const saving = ref(false)
 
@@ -87,7 +90,7 @@ async function logout() {
     </section>
 
     <section>
-      <h2 class="overline mb-3">
+      <h2 class="section-label mb-3">
         Apparence
       </h2>
       <div class="grid grid-cols-3 gap-1 rounded-full bg-surface-alt p-1">
@@ -107,7 +110,7 @@ async function logout() {
 
     <section>
       <div class="mb-3 flex items-center justify-between">
-        <h2 class="overline">
+        <h2 class="section-label">
           Mes catégories
         </h2>
         <button type="button" class="flex min-h-11 items-center gap-1 px-2 font-bold text-primary" @click="openNew">
@@ -144,29 +147,38 @@ async function logout() {
         </div>
         <fieldset>
           <legend class="label">
-            Icône
+            Icône <span class="font-normal text-ink-2">· {{ iconLabel(editing.icon) }}</span>
           </legend>
-          <div class="flex flex-wrap gap-2">
-            <button
-              v-for="icon in CATEGORY_ICONS"
-              :key="icon"
-              type="button"
-              class="flex size-13 items-center justify-center rounded-full border-2 transition"
-              :class="editing.icon === icon ? 'border-primary bg-primary-soft text-primary' : 'border-transparent bg-surface-alt text-ink-2'"
-              :aria-label="icon"
-              :aria-pressed="editing.icon === icon"
-              @click="editing.icon = icon"
-            >
-              <AppIcon :name="categoryIcon(icon)" :size="24" />
-            </button>
+          <div v-for="group in CATEGORY_ICON_GROUPS" :key="group.label" class="mb-4">
+            <h3 class="section-label mb-2">
+              {{ group.label }}
+            </h3>
+            <div class="grid grid-cols-6 gap-2">
+              <button
+                v-for="icon in group.icons"
+                :key="icon.id"
+                type="button"
+                class="flex aspect-square items-center justify-center rounded-md border-2 transition active:scale-90"
+                :class="editing.icon === icon.id ? 'border-primary bg-primary-soft text-primary' : 'border-transparent bg-surface-alt text-ink-2'"
+                :aria-label="icon.label"
+                :title="icon.label"
+                :aria-pressed="editing.icon === icon.id"
+                @click="editing.icon = icon.id"
+              >
+                <AppIcon :name="categoryIcon(icon.id)" :size="26" />
+              </button>
+            </div>
           </div>
         </fieldset>
-        <AppButton type="submit" :loading="saving">
-          Enregistrer
-        </AppButton>
-        <AppButton v-if="editing.id" variant="ghost" icon="trash" class="text-danger!" @click="removeCategory">
-          Supprimer la catégorie
-        </AppButton>
+        <!-- Reste visible pendant qu'on fait défiler les icônes -->
+        <div class="sticky bottom-0 -mx-5 space-y-1 bg-bg px-5 pt-3" style="padding-bottom: env(safe-area-inset-bottom)">
+          <AppButton type="submit" :loading="saving">
+            Enregistrer
+          </AppButton>
+          <AppButton v-if="editing.id" variant="ghost" icon="trash" class="text-danger!" @click="removeCategory">
+            Supprimer la catégorie
+          </AppButton>
+        </div>
       </form>
     </BottomSheet>
   </div>

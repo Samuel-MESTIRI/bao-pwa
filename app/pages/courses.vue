@@ -134,7 +134,7 @@ async function clearAll() {
 
       <section v-if="done.length" class="mt-7">
         <div class="mb-2 flex items-center justify-between">
-          <h2 class="overline">
+          <h2 class="section-label">
             Dans le panier · {{ done.length }}
           </h2>
           <button type="button" class="min-h-11 px-2 text-[15px] font-medium text-ink-2" @click="clearChecked">

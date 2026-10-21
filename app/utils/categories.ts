@@ -1,5 +1,8 @@
-/** Icône SVG associée à une catégorie. */
-export const CATEGORY_ICON_FILE: Record<string, string> = {
+/**
+ * Fichier SVG (assets/icons) d'une icône de catégorie. Les 6 premières viennent
+ * de l'app d'origine ; les autres sont des Material Symbols nommés `cat-<id>`.
+ */
+const LEGACY_ICON_FILE: Record<string, string> = {
   plat: 'category-plat',
   dessert: 'category-dessert',
   healthy: 'category-healthy',
@@ -8,7 +11,12 @@ export const CATEGORY_ICON_FILE: Record<string, string> = {
   tag: 'chef-hat',
 }
 
-export const categoryIcon = (icon: string | null | undefined) => CATEGORY_ICON_FILE[icon ?? 'tag'] ?? 'chef-hat'
+const KNOWN_ICONS = new Set<string>(CATEGORY_ICONS)
+
+export function categoryIcon(icon: string | null | undefined) {
+  const id = icon && KNOWN_ICONS.has(icon) ? icon : 'tag'
+  return LEGACY_ICON_FILE[id] ?? `cat-${id}`
+}
 
 export const imageUrl = (image: string | null | undefined, variant: 'full' | 'thumb' = 'full') =>
   image ? `/images/${image}${variant === 'thumb' ? '-thumb' : ''}.webp` : null

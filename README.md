@@ -9,7 +9,7 @@ Carnet de recettes multi-compte, pensé pour l'iPhone (installé via Safari → 
 - **Comptes** : inscription libre, connexion (session par cookie chiffré, 90 jours).
 - **Recettes** : liste, recherche, filtre par catégorie, fiche avec ajustement des quantités au nombre de personnes, création / modification / suppression, photo.
 - **Import depuis un lien** (Marmiton, Journal des Femmes, 750g…) : la fiche schema.org/Recipe de la page pré-remplit le formulaire (ingrédients découpés en quantité / unité / nom, photo téléchargée et compressée). Les adresses internes sont refusées.
-- **Catégories** propres à chaque utilisateur (5 créées par défaut, modifiables).
+- **Catégories** propres à chaque utilisateur (5 créées par défaut, modifiables), avec une quarantaine d'icônes classées par thème (icônes [Material Symbols](https://fonts.google.com/icons), licence Apache 2.0 : `app/assets/icons/LICENSE-material-symbols.txt`).
 - **Mode cuisine** : une étape par écran, texte agrandissable, balayage gauche/droite, ingrédients accessibles, écran maintenu allumé (Wake Lock).
 - **Sélection** de recettes avec nombre de parts, puis **liste de courses** générée : ingrédients identiques fusionnés, quantités additionnées (g + kg, ml + L). Les articles ajoutés à la main sont conservés lors d'une nouvelle génération.
 - **Thème** Système / Clair / Sombre.
