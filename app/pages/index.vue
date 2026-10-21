@@ -23,14 +23,11 @@ onMounted(() => {
   greeting.value = h < 11 ? 'Bon matin' : h < 14 ? 'C\'est l\'heure de manger' : h < 18 ? 'Bon après-midi' : 'Bonsoir'
 })
 
-const normalize = (s: string) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
-
+// Par catégorie, puis par nom ou ingrédient (voir utils/search.ts)
 const filtered = computed(() => {
-  const q = normalize(search.value.trim())
-  return (recipes.value ?? []).filter(r =>
-    (!q || normalize(r.name).includes(q))
-    && activeCategories.value.every(id => r.categoryIds.includes(id)),
-  )
+  const inCategories = (recipes.value ?? []).filter(r =>
+    activeCategories.value.every(id => r.categoryIds.includes(id)))
+  return searchRecipes(inCategories, search.value)
 })
 
 const selectedIds = computed(() => new Set((selection.value ?? []).map(s => s.recipeId)))
@@ -80,7 +77,7 @@ async function addToSelection(recipe: { id: number, name: string, servings: numb
     <label class="relative mb-4 block">
       <span class="sr-only">Rechercher une recette</span>
       <AppIcon name="search" :size="22" class="pointer-events-none absolute top-1/2 left-4 -translate-y-1/2 text-muted" />
-      <input v-model="search" type="search" class="field rounded-full! pl-12" placeholder="Rechercher une recette…" enterkeyhint="search">
+      <input v-model="search" type="search" class="field rounded-full! pl-12" placeholder="Rechercher une recette ou un ingrédient…" enterkeyhint="search">
     </label>
 
     <div v-if="categories?.length" class="no-scrollbar -mx-4 mb-5 flex gap-2 overflow-x-auto px-4 pb-1">
@@ -96,9 +93,10 @@ async function addToSelection(recipe: { id: number, name: string, servings: numb
 
     <div v-if="filtered.length" class="grid grid-cols-2 gap-3 sm:grid-cols-3">
       <RecipeCard
-        v-for="r in filtered"
+        v-for="{ recipe: r, matchedIngredient } in filtered"
         :key="r.id"
         :recipe="r"
+        :hint="matchedIngredient ? `Contient : ${matchedIngredient.toLowerCase()}` : undefined"
         :selected="selectedIds.has(r.id)"
         @select="addToSelection(r)"
       />

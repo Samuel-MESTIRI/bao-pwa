@@ -2,6 +2,8 @@
 const props = defineProps<{
   recipe: { id: number, name: string, image: string | null, prepTime: number | null, cookTime: number | null, difficulty: number | null }
   selected: boolean
+  /** Petite ligne sous le titre, ex. « Contient : poulet » quand la recherche passe par un ingrédient */
+  hint?: string
 }>()
 defineEmits<{ select: [] }>()
 
@@ -38,6 +40,10 @@ const difficulty = computed(() => difficultyLabel(props.recipe.difficulty))
         <h3 class="line-clamp-2 min-h-[2.75em] text-[16px] leading-[1.375] font-bold">
           {{ recipe.name }}
         </h3>
+        <p v-if="hint" class="mt-1 flex items-center gap-1 truncate text-[13px] font-medium text-accent-strong dark:text-accent">
+          <AppIcon name="search" :size="14" class="shrink-0" />
+          <span class="truncate">{{ hint }}</span>
+        </p>
       </div>
     </NuxtLink>
     <button
