@@ -9,6 +9,7 @@ Carnet de recettes multi-compte, pensé pour l'iPhone (installé via Safari → 
 - **Comptes** : inscription libre, connexion (session par cookie chiffré, 90 jours).
 - **Recettes** : liste, recherche par nom ou par ingrédient (sans accents, singulier/pluriel confondus, plusieurs mots), filtre par catégorie, fiche avec ajustement des quantités au nombre de personnes, création / modification / suppression, photo.
 - **Import depuis un lien** (Marmiton, Journal des Femmes, 750g…) : la fiche schema.org/Recipe de la page pré-remplit le formulaire (ingrédients découpés en quantité / unité / nom, photo téléchargée et compressée). Les adresses internes sont refusées.
+- **Scan magique** : photo d'une page de livre de recettes → formulaire pré-rempli (titre, temps, parts, ingrédients, étapes, catégories), traduit en français si besoin. Lecture par Gemini Flash-Lite (`GEMINI_API_KEY`), photo jamais conservée, 20 scans par jour et par personne et 450 au total (sous le quota gratuit, remis à zéro à minuit heure de Californie).
 - **Catégories** propres à chaque utilisateur (5 créées par défaut, modifiables), avec une quarantaine d'icônes classées par thème (icônes [Material Symbols](https://fonts.google.com/icons), licence Apache 2.0 : `app/assets/icons/LICENSE-material-symbols.txt`).
 - **Mode cuisine** : une étape par écran, texte agrandissable, balayage gauche/droite, ingrédients accessibles, écran maintenu allumé (Wake Lock).
 - **Sélection** de recettes avec nombre de parts, puis **liste de courses** générée : ingrédients identiques fusionnés, quantités additionnées (g + kg, ml + L). Les articles ajoutés à la main sont conservés lors d'une nouvelle génération.
@@ -48,6 +49,8 @@ Variables d'environnement :
 | --- | --- |
 | `DATABASE_URL` | URL PostgreSQL fournie par Coolify |
 | `NUXT_SESSION_PASSWORD` | 32 caractères aléatoires minimum (`openssl rand -hex 32`) |
+| `GEMINI_API_KEY` | Clé Google AI Studio pour le scan magique (facultative : sans elle, le bouton est masqué) |
+| `GEMINI_MODEL` | Facultatif, modèle Gemini (défaut : `gemini-flash-lite-latest`) |
 
 Volume persistant : monter un volume sur **`/data/uploads`** (photos). À inclure dans les sauvegardes, avec la base.
 

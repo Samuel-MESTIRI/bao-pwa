@@ -71,6 +71,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     databaseUrl: '',
     uploadDir: './.data/uploads',
+    // Scan magique : sans clé, le bouton est masqué (GEMINI_API_KEY / GEMINI_MODEL)
+    geminiApiKey: '',
+    geminiModel: '',
     session: {
       maxAge: 60 * 60 * 24 * 90, // 90 jours : on ne se reconnecte pas tous les quatre matins en cuisine
     },

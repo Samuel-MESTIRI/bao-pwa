@@ -90,6 +90,17 @@ export const shopItems = pgTable('shop_items', {
   createdAt: createdAt(),
 }, t => [index('shop_items_user_idx').on(t.userId)])
 
+/**
+ * Scans de recettes par IA, comptés par utilisateur et par jour.
+ * `day` suit le jour du fournisseur (Gemini : minuit heure de Californie),
+ * pour que nos plafonds se remettent à zéro en même temps que son quota.
+ */
+export const aiUsage = pgTable('ai_usage', {
+  userId: uuid('user_id').notNull().references(() => users.id, { onDelete: 'cascade' }),
+  day: text('day').notNull(),
+  count: integer('count').notNull().default(0),
+}, t => [primaryKey({ columns: [t.userId, t.day] }), index('ai_usage_day_idx').on(t.day)])
+
 export const recipesRelations = relations(recipes, ({ many }) => ({
   ingredients: many(ingredients),
   steps: many(steps),
